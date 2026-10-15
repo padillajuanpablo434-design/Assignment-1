@@ -21,6 +21,16 @@ class MoneyTest {
     }
 
     @Test
+    void subtractTakesAwayCents() {
+        assertEquals(Money.ofCents(125), Money.ofCents(425).subtract(Money.ofCents(300)));
+    }
+
+    @Test
+    void subtractCanGoNegative() {
+        assertEquals(Money.ofCents(-50), Money.ofCents(100).subtract(Money.ofCents(150)));
+    }
+
+    @Test
     void multiplyScalesByFactor() {
         Money perMinute = Money.ofCents(15);
         assertEquals(Money.ofCents(450), perMinute.multiply(30));
