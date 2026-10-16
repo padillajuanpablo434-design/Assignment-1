@@ -199,3 +199,45 @@ The diagram shows these relationships:
 - The fault is recorded, the vehicle is out of service and cannot be rented, and the maintenance crew and operators have been notified.
 
 **Related requirements:** FR-18, FR-19, FR-20, FR-21, QR-04
+
+## UC-04 Pay for Trip
+
+| | |
+|-|-|
+| **ID** | UC-04 |
+| **Primary actor** | Rider |
+| **Secondary actors** | Payment Provider |
+| **Stakeholders and interests** | **Rider:** wants to be charged the correct amount, exactly once, and to get the deposit back. **GoCycle:** wants to collect the full fare. **Payment Provider:** wants valid charge and release requests. |
+| **Preconditions** | The trip has ended with the vehicle confirmed locked (UC-02, step 5). A deposit hold is in place. This use case is included by UC-02. |
+
+**Main success scenario**
+
+1. The system calculates the billed minutes from the start and end times, rounding any partial minute up.
+2. The system calculates the cost using the rider type's pricing: the unlock fee plus the per-minute rate times the billed minutes, plus the long-trip surcharge if the trip was longer than 120 minutes.
+3. The system charges the cost to the rider's payment method through the Payment Provider.
+4. The system releases the deposit hold.
+5. The system creates a receipt showing the trip, vehicle, times, minutes, unlock fee, time charge, any surcharge and the total.
+6. The system sends the receipt through the app or by email (include **Send Receipt**).
+
+**Alternate flows**
+
+- **3a. The Payment Provider declines the charge:**
+  1. The system keeps the deposit hold in place and tells the rider the payment was declined.
+  2. The system asks for another payment method allowed in the zone.
+  3. If the rider provides one, the use case resumes at step 3.
+- **3b. The rider has no other payment method:**
+  1. The amount stays outstanding and is flagged to the control room, and the deposit hold is kept.
+  2. The use case ends without a receipt.
+- **3c. The chosen replacement method is not allowed in the zone:**
+  1. The system lists the zone's allowed methods.
+  2. The use case resumes at 3a, step 2.
+- **6a. Email delivery fails:**
+  1. The system shows the receipt in the app instead.
+  2. The system retries the email later.
+
+**Postconditions**
+
+- **Success:** the rider has been charged the calculated cost exactly once, the deposit hold is released and the rider has a receipt.
+- **Charge declined:** the deposit hold remains, and no receipt is issued.
+
+**Related requirements:** FR-03, FR-04, FR-05, FR-06, FR-07, FR-09, FR-22, FR-23, FR-30, FR-31, QR-02, C-03
