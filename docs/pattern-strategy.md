@@ -128,3 +128,12 @@ Each rider subclass passes its strategy to `Rider`'s constructor, already wrappe
 - **Two places to look for a rate:** a reader must look at both the strategy and the rider subclass to see which rate a rider gets.
 
 For a system the client has said will gain new rider types, we judged the extensibility and testability worth the extra classes.
+
+## Supporting pattern: Decorator
+
+The long-trip surcharge applies to **every** rider type, so it is not repeated in each strategy. `LongTripSurchargePricing` is a **Decorator**: it implements `PricingStrategy`, wraps another `PricingStrategy`, and delegates to it.
+
+- `unlockFee()` and `perMinuteRate()` return the wrapped strategy's values.
+- `calculate(minutes)` takes the wrapped strategy's result and adds $5.00 when `minutes > 120`.
+
+Because the decorator is itself a `PricingStrategy`, `Rider` and `Trip` cannot tell a decorated strategy from a plain one. The surcharge rule lives in exactly one class, and future rules, such as a cap or a discount, can be added as further decorators without touching the base strategies.
