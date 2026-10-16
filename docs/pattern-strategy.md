@@ -28,3 +28,85 @@ We considered two alternatives:
   - `Rider` would then be responsible for both who the rider is and how they are charged.
 
 With Strategy, `Rider` knows only *which* pricing applies, each `PricingStrategy` knows only *how* to price, and `Trip` depends only on the `PricingStrategy` interface.
+
+## Class diagram
+
+![Strategy class diagram](images/strategy-class-diagram.png)
+
+```plantuml
+@startuml strategy-class-diagram
+skinparam classAttributeIconSize 0
+hide empty members
+
+interface PricingStrategy {
+  + unlockFee() : Money
+  + perMinuteRate() : Money
+  + calculate(minutes : long) : Money
+}
+
+class CasualPricing {
+  + {static} UNLOCK_FEE : Money = $1.50
+  + {static} PER_MINUTE_RATE : Money = $0.35
+}
+
+class MemberPricing {
+  + {static} UNLOCK_FEE : Money = $0.00
+  + {static} PER_MINUTE_RATE : Money = $0.20
+}
+
+class StudentPricing {
+  + {static} UNLOCK_FEE : Money = $1.00
+  + {static} PER_MINUTE_RATE : Money = $0.25
+}
+
+class LongTripSurchargePricing <<decorator>> {
+  + {static} LONG_TRIP_THRESHOLD_MINUTES : long = 120
+  + {static} LONG_TRIP_SURCHARGE : Money = $5.00
+  - base : PricingStrategy
+  + LongTripSurchargePricing(base : PricingStrategy)
+  + calculate(minutes : long) : Money
+}
+
+abstract class Rider {
+  - id : String
+  - name : String
+  - email : String
+  - pricing : PricingStrategy
+  # Rider(id, name, email, pricing : PricingStrategy)
+  + getPricing() : PricingStrategy
+}
+
+class CasualRider
+class MemberRider
+class StudentRider
+
+class Trip {
+  + end(point : DockingPoint, now : Instant) : Receipt
+}
+
+PricingStrategy <|.. CasualPricing
+PricingStrategy <|.. MemberPricing
+PricingStrategy <|.. StudentPricing
+PricingStrategy <|.. LongTripSurchargePricing
+LongTripSurchargePricing o--> "1" PricingStrategy : base
+
+Rider o--> "1" PricingStrategy : pricing
+Rider <|-- CasualRider
+Rider <|-- MemberRider
+Rider <|-- StudentRider
+
+Trip --> "1" Rider
+Trip ..> PricingStrategy : uses via rider.getPricing()
+
+note bottom of PricingStrategy
+  calculate() is a default method:
+  unlockFee() + perMinuteRate() × minutes
+end note
+
+note bottom of CasualRider
+  new LongTripSurchargePricing(new CasualPricing())
+end note
+@enduml
+```
+
+Each rider subclass passes its strategy to `Rider`'s constructor, already wrapped in the surcharge decorator. For example, `CasualRider` passes `new LongTripSurchargePricing(new CasualPricing())`. The code is in `src/main/java/gocycle/pricing/` and `src/main/java/gocycle/rider/`.
