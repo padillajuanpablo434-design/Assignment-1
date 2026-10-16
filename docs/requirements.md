@@ -92,3 +92,14 @@ IDs are numbered across the whole document, so they stay unique when referenced 
 |----|-------------|--------|
 | FR-30 | The system issues a receipt to the rider once their trip has been paid. | "After a trip is paid, the rider gets a receipt" |
 | FR-31 | The rider receives the receipt either through the app or by email. | "via app or email" |
+
+## Proposed improvements
+
+> **These are the team's proposals in response to the client's invitation for suggestions. They are not client requirements and are not part of the current scope.**
+
+| ID | Proposal | Benefit |
+|----|----------|---------|
+| P-01 | **Live station availability in the app:** show each station's available vehicles and free docking points on a map. | Riders can avoid empty stations at the start of a trip and full stations at the end, reducing redirects (FR-16). |
+| P-02 | **Reservation hold:** let a rider reserve a vehicle or a docking point for a short time, e.g. 10 minutes, before arriving. | Gives riders certainty for planned trips; the reserved vehicle or point is hidden from others until the hold expires. |
+| P-03 | **Battery-level filter:** let riders filter electric vehicles by battery level and see an estimated range. | Riders pick a vehicle that can finish their trip, and fewer rentals end because the battery runs low. |
+| P-04 | **Fare estimate before unlocking:** show the estimated cost for the rider's type, including the long-trip surcharge, before they confirm. | Makes pricing transparent, especially the surcharge after 2 hours (FR-07). |
