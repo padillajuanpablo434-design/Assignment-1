@@ -5,6 +5,8 @@ package gocycle.pricing;
  * <p>
  * Each rider type (casual, member, student, and any added later) supplies its own
  * strategy, so new pricing can be added without changing {@code Rider} or {@code Trip}.
+ * Extra rules such as the long-trip surcharge are added by wrapping a strategy in a
+ * decorator, e.g. {@link LongTripSurchargePricing}.
  */
 public interface PricingStrategy {
 
@@ -19,11 +21,15 @@ public interface PricingStrategy {
     Money perMinuteRate();
 
     /**
-     * Calculates the total cost of a trip: unlock fee plus per-minute charge,
-     * plus a long-trip surcharge for trips over 2 hours.
+     * Calculates the total cost of a trip.
+     * <p>
+     * The default is the unlock fee plus the per-minute rate for each minute.
+     * Decorators override this to add extra charges.
      *
      * @param minutes the trip length in whole minutes
      * @return the total cost
      */
-    Money calculate(long minutes);
+    default Money calculate(long minutes) {
+        return unlockFee().add(perMinuteRate().multiply(minutes));
+    }
 }

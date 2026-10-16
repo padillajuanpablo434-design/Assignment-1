@@ -64,6 +64,18 @@ public final class Money implements Comparable<Money> {
     }
 
     /**
+     * Subtracts another amount from this one.
+     *
+     * @param other the amount to subtract
+     * @return the difference
+     * @throws ArithmeticException if the result overflows
+     */
+    public Money subtract(Money other) {
+        Objects.requireNonNull(other, "other");
+        return new Money(Math.subtractExact(cents, other.cents));
+    }
+
+    /**
      * Multiplies this amount by a whole number, e.g. a per-minute rate by a number of minutes.
      *
      * @param factor the multiplier
