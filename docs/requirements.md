@@ -48,3 +48,13 @@ IDs are numbered across the whole document, so they stay unique when referenced 
 | FR-17 | While a rider is being redirected, their trip stays active and continues to be charged. | "trip continues" |
 | QR-03 | No trip ends without lock confirmation, and the billed time of every trip stops at the moment the lock is confirmed. | "the trip ends and charging stops only once the vehicle is confirmed locked" |
 | C-02 | Each docking point holds at most one vehicle at a time. | "each point holds one vehicle" |
+
+## Faults & Maintenance
+
+| ID | Requirement | Source |
+|----|-------------|--------|
+| FR-18 | A rider can report a fault on a vehicle and choose its type, such as flat tire or broken brakes. | "Riders report faults (flat tire, broken brakes)" |
+| FR-19 | Electric vehicles automatically report low battery and their own faults. | "electric vehicles self-report low battery/faults" |
+| FR-20 | The system takes a vehicle out of service when a fault is reported on it. | "Broken vehicles go out of service" |
+| FR-21 | The system notifies the maintenance crew and the control-room operators of every fault report. | "maintenance crew and control-room operators are notified" |
+| QR-04 | A vehicle cannot be rented from the moment its fault is recorded: zero rentals of a vehicle with an open fault. | "Broken vehicles go out of service" |
