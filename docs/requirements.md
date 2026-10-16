@@ -58,3 +58,11 @@ IDs are numbered across the whole document, so they stay unique when referenced 
 | FR-20 | The system takes a vehicle out of service when a fault is reported on it. | "Broken vehicles go out of service" |
 | FR-21 | The system notifies the maintenance crew and the control-room operators of every fault report. | "maintenance crew and control-room operators are notified" |
 | QR-04 | A vehicle cannot be rented from the moment its fault is recorded: zero rentals of a vehicle with an open fault. | "Broken vehicles go out of service" |
+
+## Payment & Zones
+
+| ID | Requirement | Source |
+|----|-------------|--------|
+| FR-22 | A rider can pay by credit card, city transit card or phone wallet. | "Payment: credit card, city transit card, phone wallet" |
+| FR-23 | Each zone has a configured list of allowed payment methods, and the system accepts only those methods for trips in that zone. | "Zones may allow only some methods" |
+| C-03 | Payment is limited to the three method types the client names: credit card, city transit card and phone wallet. | "Payment: credit card, city transit card, phone wallet" |
