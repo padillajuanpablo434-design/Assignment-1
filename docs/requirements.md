@@ -66,3 +66,14 @@ IDs are numbered across the whole document, so they stay unique when referenced 
 | FR-22 | A rider can pay by credit card, city transit card or phone wallet. | "Payment: credit card, city transit card, phone wallet" |
 | FR-23 | Each zone has a configured list of allowed payment methods, and the system accepts only those methods for trips in that zone. | "Zones may allow only some methods" |
 | C-03 | Payment is limited to the three method types the client names: credit card, city transit card and phone wallet. | "Payment: credit card, city transit card, phone wallet" |
+
+## Accessibility & Branding
+
+| ID | Requirement | Source |
+|----|-------------|--------|
+| FR-24 | Rider-facing screens can be shown in several languages, chosen by the rider. | "Screens: multiple languages" |
+| FR-25 | Rider-facing screens can read their content aloud. | "read-aloud" |
+| FR-26 | Screens show the brand colours and logo of the zone they are in. | "per-zone brand colours/logo" |
+| QR-05 | 100% of rider-facing screen text is available in every supported language and through read-aloud. | "Screens: multiple languages, read-aloud" |
+| QR-06 | Changing a zone's colours or logo requires only a configuration change, with no code change or rebuild. | "per-zone brand colours/logo from configuration" |
+| C-04 | Zone branding must be loaded from configuration rather than written into the code. | "from configuration" |
