@@ -77,3 +77,11 @@ IDs are numbered across the whole document, so they stay unique when referenced 
 | QR-05 | 100% of rider-facing screen text is available in every supported language and through read-aloud. | "Screens: multiple languages, read-aloud" |
 | QR-06 | Changing a zone's colours or logo requires only a configuration change, with no code change or rebuild. | "per-zone brand colours/logo from configuration" |
 | C-04 | Zone branding must be loaded from configuration rather than written into the code. | "from configuration" |
+
+## Operations
+
+| ID | Requirement | Source |
+|----|-------------|--------|
+| FR-27 | Operators can see every station and vehicle, with each vehicle's status and each station's free docking points. | "Operators see all stations/vehicles" |
+| FR-28 | Operators can rebalance vehicles by moving them from one station to another. | "rebalance vehicles" |
+| FR-29 | Operators can take a vehicle out of service and put it back into service. | "take vehicles in/out of service" |
