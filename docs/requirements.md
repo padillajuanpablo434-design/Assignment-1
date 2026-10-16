@@ -28,3 +28,11 @@ IDs are numbered across the whole document, so they stay unique when referenced 
 | QR-01 | Adding a new rider type requires only new classes; no existing pricing, rider or trip class is changed. | "New rider types will be added later — pricing must be easy to extend" |
 | QR-02 | Every trip cost is exact to the cent: the total equals the unlock fee plus the per-minute charge plus any surcharge, with no rounding error. | "Trip cost = unlock fee + per-minute charge" |
 | C-01 | Riders can reach the system through only two channels: the phone app, and the station screen with its card reader. | "Access via phone app OR station screen + card reader" |
+
+## Vehicles
+
+| ID | Requirement | Source |
+|----|-------------|--------|
+| FR-10 | The system supports three vehicle types: pedal bike, e-bike and e-scooter. | "Vehicles: pedal bike, e-bike, e-scooter" |
+| FR-11 | The system tracks the battery level of each electric vehicle (e-bike and e-scooter). | "Electric ones have a battery" |
+| FR-12 | The system refuses to rent an electric vehicle whose battery is below 20%. | "cannot be rented below 20%" |
