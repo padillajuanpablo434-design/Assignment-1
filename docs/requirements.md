@@ -85,3 +85,10 @@ IDs are numbered across the whole document, so they stay unique when referenced 
 | FR-27 | Operators can see every station and vehicle, with each vehicle's status and each station's free docking points. | "Operators see all stations/vehicles" |
 | FR-28 | Operators can rebalance vehicles by moving them from one station to another. | "rebalance vehicles" |
 | FR-29 | Operators can take a vehicle out of service and put it back into service. | "take vehicles in/out of service" |
+
+## Receipts
+
+| ID | Requirement | Source |
+|----|-------------|--------|
+| FR-30 | The system issues a receipt to the rider once their trip has been paid. | "After a trip is paid, the rider gets a receipt" |
+| FR-31 | The rider receives the receipt either through the app or by email. | "via app or email" |
