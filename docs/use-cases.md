@@ -161,3 +161,41 @@ The diagram shows these relationships:
 - **While not locked:** the trip remains active and charging continues.
 
 **Related requirements:** FR-13, FR-14, FR-15, FR-16, FR-17, FR-09, FR-30, QR-03, C-02
+
+## UC-03 Report Fault
+
+| | |
+|-|-|
+| **ID** | UC-03 |
+| **Primary actor** | Rider, or Electric Vehicle when the report is self-generated |
+| **Secondary actors** | Maintenance Crew, Operator |
+| **Stakeholders and interests** | **Rider:** wants to report a problem quickly and not be charged for a broken vehicle. **Other riders:** want broken vehicles removed so they are not rented. **Maintenance Crew:** wants clear details of the fault and the vehicle. **Operators:** want to know which vehicles are unavailable. |
+| **Preconditions** | The vehicle is registered in GoCycle. |
+
+**Main success scenario**
+
+1. The rider chooses **Report Fault** in the app or on the station screen.
+2. The rider identifies the vehicle, e.g. by scanning its code or selecting it at the station.
+3. The rider chooses the fault type (flat tire, broken brakes or other) and may add a description.
+4. The system records the fault report.
+5. The system takes the vehicle out of service so it cannot be rented.
+6. The system notifies the maintenance crew and the control-room operators (include **Notify Maintenance and Operators**).
+7. The system confirms to the rider that the fault has been reported.
+
+**Alternate flows**
+
+- **1a. The fault is self-reported by an electric vehicle:**
+  1. The vehicle detects low battery or an electrical fault and sends a report with its fault type.
+  2. The use case continues at step 4, and step 7 is skipped because there is no rider to confirm to.
+- **2a. The rider reports a fault on the vehicle they are currently riding:**
+  1. The system records the report and asks the rider to return the vehicle to the nearest station (UC-02).
+  2. The vehicle is taken out of service once it is docked.
+- **5a. The vehicle is already out of service:**
+  1. The system adds the report to the vehicle's existing fault record.
+  2. The crew and operators are notified of the additional report, and the use case continues at step 7.
+
+**Postconditions**
+
+- The fault is recorded, the vehicle is out of service and cannot be rented, and the maintenance crew and operators have been notified.
+
+**Related requirements:** FR-18, FR-19, FR-20, FR-21, QR-04
