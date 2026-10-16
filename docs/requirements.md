@@ -36,3 +36,15 @@ IDs are numbered across the whole document, so they stay unique when referenced 
 | FR-10 | The system supports three vehicle types: pedal bike, e-bike and e-scooter. | "Vehicles: pedal bike, e-bike, e-scooter" |
 | FR-11 | The system tracks the battery level of each electric vehicle (e-bike and e-scooter). | "Electric ones have a battery" |
 | FR-12 | The system refuses to rent an electric vehicle whose battery is below 20%. | "cannot be rented below 20%" |
+
+## Stations & Returns
+
+| ID | Requirement | Source |
+|----|-------------|--------|
+| FR-13 | The system manages docking stations, each made up of docking points. | "Docking stations, each with docking points" |
+| FR-14 | A rider can return a vehicle to any station that has a free docking point, not only the station it was taken from. | "return it to any station with a free point" |
+| FR-15 | The system ends a trip and stops charging only once the docking point confirms the vehicle is locked. | "the trip ends and charging stops only once the vehicle is confirmed locked" |
+| FR-16 | If the chosen station has no free docking point, the system directs the rider to the nearest station that has one. | "If no free point, the rider is directed to the nearest station with one" |
+| FR-17 | While a rider is being redirected, their trip stays active and continues to be charged. | "trip continues" |
+| QR-03 | No trip ends without lock confirmation, and the billed time of every trip stops at the moment the lock is confirmed. | "the trip ends and charging stops only once the vehicle is confirmed locked" |
+| C-02 | Each docking point holds at most one vehicle at a time. | "each point holds one vehicle" |
