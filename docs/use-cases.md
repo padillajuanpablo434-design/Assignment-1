@@ -121,3 +121,43 @@ The diagram shows these relationships:
 - **Failure:** no trip exists, no hold remains on the rider's payment method and the vehicle stays docked.
 
 **Related requirements:** FR-01, FR-02, FR-08, FR-11, FR-12, FR-22, FR-23, FR-24, FR-25, C-01, C-03, QR-04
+
+## UC-02 Return Vehicle
+
+| | |
+|-|-|
+| **ID** | UC-02 |
+| **Primary actor** | Rider |
+| **Secondary actors** | Payment Provider |
+| **Stakeholders and interests** | **Rider:** wants to be able to return anywhere convenient and to stop paying as soon as the vehicle is docked. **GoCycle:** wants every vehicle securely locked before a trip ends, so vehicles are not lost. **Operators:** want accurate station occupancy. |
+| **Preconditions** | The rider has an active trip (UC-01). |
+
+**Main success scenario**
+
+1. The rider arrives at a station.
+2. The system shows that the station has a free docking point.
+3. The rider pushes the vehicle into the free docking point.
+4. The docking point confirms the vehicle is locked.
+5. The system records the end time and ends the trip; charging stops at this moment.
+6. The system takes payment (include **Pay for Trip**, UC-04).
+7. The system marks the vehicle available at this station.
+
+**Alternate flows**
+
+- **2a. The station has no free docking point (extend Redirect to Nearest Station):**
+  1. The system finds the nearest station with at least one free docking point and directs the rider there on the station screen or in the app.
+  2. The trip stays active and charging continues.
+  3. The use case resumes at step 1 at the new station.
+- **4a. The docking point does not confirm the lock:**
+  1. The system tells the rider the vehicle is not locked and asks them to re-seat it.
+  2. The trip stays active and charging continues.
+  3. The use case resumes at step 3.
+  4. If the lock still fails, the rider may report a fault on the docking point or vehicle (UC-03) and use another free point.
+- **6a. Payment fails:** see UC-04, alternate flows 3a and 3b.
+
+**Postconditions**
+
+- **Success:** the vehicle is locked in a docking point and marked available, the trip has ended with its end time equal to the lock-confirmation time, and the rider has paid and received a receipt.
+- **While not locked:** the trip remains active and charging continues.
+
+**Related requirements:** FR-13, FR-14, FR-15, FR-16, FR-17, FR-09, FR-30, QR-03, C-02
