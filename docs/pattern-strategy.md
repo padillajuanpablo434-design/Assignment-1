@@ -110,3 +110,21 @@ end note
 ```
 
 Each rider subclass passes its strategy to `Rider`'s constructor, already wrapped in the surcharge decorator. For example, `CasualRider` passes `new LongTripSurchargePricing(new CasualPricing())`. The code is in `src/main/java/gocycle/pricing/` and `src/main/java/gocycle/rider/`.
+
+## Benefits and trade-offs
+
+**Benefits:**
+
+- **Open/Closed:** a new rider type, such as a senior rider, is one new `Rider` subclass, plus one new `PricingStrategy` if it needs new rates. `PricingStrategy`, the existing strategies, `Rider` and `Trip` are not edited, which meets QR-01.
+- **Single responsibility:** each strategy holds exactly one set of rates.
+- **No type checks:** `Trip` never checks the rider's type.
+- **Testability:** each strategy can be unit-tested on its own with plain numbers, and `Trip` can be tested with any `PricingStrategy`.
+- **Changeable at runtime:** pricing could change without changing the rider's class, e.g. for a promotion, if a setter were added.
+
+**Trade-offs:**
+
+- **More classes:** three rider types need three strategy classes as well as three rider classes.
+- **An extra layer:** the decorator means the cost passes through two objects, which makes the flow slightly harder to follow when debugging.
+- **Two places to look for a rate:** a reader must look at both the strategy and the rider subclass to see which rate a rider gets.
+
+For a system the client has said will gain new rider types, we judged the extensibility and testability worth the extra classes.
