@@ -72,3 +72,52 @@ The diagram shows these relationships:
 - **Return Vehicle** always includes **Pay for Trip**, which always includes **Send Receipt**.
 - **Report Fault** always includes **Notify Maintenance and Operators**, whether the rider or the electric vehicle raises the report.
 - **Redirect to Nearest Station** extends **Return Vehicle** only when the station has no free docking point.
+
+## UC-01 Start Trip
+
+| | |
+|-|-|
+| **ID** | UC-01 |
+| **Primary actor** | Rider |
+| **Secondary actors** | Payment Provider |
+| **Stakeholders and interests** | **Rider:** wants to unlock a working vehicle quickly and be charged fairly. **GoCycle:** wants only safe, charged vehicles rented and a deposit secured before the vehicle leaves. **Payment Provider:** wants a valid hold request on an accepted method. |
+| **Preconditions** | The rider has an account with a rider type (casual, member or student) and at least one payment method. The rider is at a station with at least one docked vehicle. |
+
+**Main success scenario**
+
+1. The rider identifies themselves through the phone app or by tapping their card on the station's card reader.
+2. The rider selects a docked vehicle.
+3. The system checks that the vehicle is rentable: it is in service, and if it is electric, its battery is at least 20%.
+4. The rider chooses a payment method.
+5. The system checks that the payment method is allowed in the station's zone.
+6. The system places a refundable $50.00 deposit hold through the Payment Provider (include **Place Deposit Hold**).
+7. The system unlocks the vehicle, marks it in use and records the start time.
+8. The rider takes the vehicle, and the trip is active.
+
+**Alternate flows**
+
+- **1a. The card reader cannot read the rider's card:**
+  1. The station screen asks the rider to tap again or use the phone app.
+  2. The use case resumes at step 1.
+- **3a. The electric vehicle's battery is below 20%:**
+  1. The system tells the rider the vehicle cannot be rented because its battery is low, and shows other vehicles at the station.
+  2. If the rider picks another vehicle, the use case resumes at step 2. Otherwise it ends and no trip starts.
+- **3b. The vehicle is out of service:**
+  1. The system tells the rider the vehicle is unavailable.
+  2. The use case continues as in 3a.
+- **5a. The payment method is not allowed in this zone:**
+  1. The system tells the rider the method is not accepted here and lists the methods this zone allows.
+  2. If the rider chooses an allowed method, the use case resumes at step 5. Otherwise it ends and no trip starts.
+- **6a. The Payment Provider declines the deposit hold:**
+  1. The system tells the rider the hold was declined. The vehicle stays locked.
+  2. If the rider chooses another method, the use case resumes at step 4. Otherwise it ends and no trip starts.
+- **7a. The vehicle fails to unlock:**
+  1. The system releases the deposit hold and leaves the trip not started.
+  2. The rider is invited to report a fault (UC-03) and choose another vehicle.
+
+**Postconditions**
+
+- **Success:** a trip is active for the rider, the deposit hold is placed, the vehicle is marked in use and the start time is recorded.
+- **Failure:** no trip exists, no hold remains on the rider's payment method and the vehicle stays docked.
+
+**Related requirements:** FR-01, FR-02, FR-08, FR-11, FR-12, FR-22, FR-23, FR-24, FR-25, C-01, C-03, QR-04
