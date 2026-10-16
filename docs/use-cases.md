@@ -241,3 +241,44 @@ The diagram shows these relationships:
 - **Charge declined:** the deposit hold remains, and no receipt is issued.
 
 **Related requirements:** FR-03, FR-04, FR-05, FR-06, FR-07, FR-09, FR-22, FR-23, FR-30, FR-31, QR-02, C-03
+
+## UC-05 Rebalance Vehicles
+
+| | |
+|-|-|
+| **ID** | UC-05 |
+| **Primary actor** | Operator |
+| **Secondary actors** | Maintenance Crew |
+| **Stakeholders and interests** | **Riders:** want vehicles at the stations where they start trips and free points where they end them. **Operators:** want an accurate picture of vehicle locations. **Maintenance Crew:** want clear instructions on what to move and where. |
+| **Preconditions** | The operator is logged in to the control-room view. |
+
+**Main success scenario**
+
+1. The operator opens the view of all stations and vehicles (include **View Stations and Vehicles**).
+2. The system shows each station's docked vehicles, free docking points and each vehicle's status and battery level.
+3. The operator identifies a station with too many vehicles and a station with too few.
+4. The operator selects the vehicles to move and the destination station.
+5. The system marks the selected vehicles unavailable for rent and unlocks them for the crew.
+6. The maintenance crew moves the vehicles and docks them at the destination station.
+7. Each destination docking point confirms its vehicle is locked, and the system marks the vehicle available at its new station.
+8. The system updates the view.
+
+**Alternate flows**
+
+- **4a. The destination station does not have enough free docking points:**
+  1. The system warns the operator and shows how many points are free.
+  2. The operator either moves fewer vehicles or chooses another destination, and the use case resumes at step 4.
+- **5a. A selected vehicle is rented before it is unlocked for the crew:**
+  1. The system removes it from the move and tells the operator.
+  2. The use case continues with the remaining vehicles.
+- **6a. The crew finds a vehicle is faulty during the move:**
+  1. The crew reports the fault (UC-03), and the vehicle is taken out of service instead of being docked as available.
+- **7a. A destination docking point does not confirm the lock:**
+  1. The vehicle stays unavailable and the operator is alerted.
+  2. The crew re-docks it, and the use case resumes at step 7.
+
+**Postconditions**
+
+- The moved vehicles are locked at the destination station and available to rent, and the operator's view shows the new distribution.
+
+**Related requirements:** FR-27, FR-28, FR-29, FR-15, C-02
