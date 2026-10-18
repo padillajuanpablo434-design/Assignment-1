@@ -1,55 +1,26 @@
 package gocycle.payment;
 
+import java.util.Objects;
 import java.util.Set;
 
-/**
- * An area of the city that may accept only some payment methods.
- * <p>
- * Stub for Person C, who owns payments and zones.
- */
+/** Named payment zone with a configurable whitelist of supported payment types. */
 public class Zone {
-
     private final String id;
     private final String name;
     private final Set<Class<? extends PaymentMethod>> allowedMethods;
 
-    /**
-     * @param id             the unique zone id
-     * @param name           the display name
-     * @param allowedMethods the payment method types accepted in this zone
-     */
     public Zone(String id, String name, Set<Class<? extends PaymentMethod>> allowedMethods) {
-        this.id = id;
-        this.name = name;
-        this.allowedMethods = allowedMethods;
+        this.id = Objects.requireNonNull(id, "id");
+        this.name = Objects.requireNonNull(name, "name");
+        this.allowedMethods = Set.copyOf(Objects.requireNonNull(allowedMethods, "allowedMethods"));
     }
 
-    /**
-     * @return the unique zone id
-     */
-    public String getId() {
-        return id;
-    }
+    public String getId() { return id; }
+    public String getName() { return name; }
+    public Set<Class<? extends PaymentMethod>> getAllowedMethods() { return allowedMethods; }
 
-    /**
-     * @return the display name
-     */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * @return the payment method types accepted in this zone
-     */
-    public Set<Class<? extends PaymentMethod>> getAllowedMethods() {
-        return allowedMethods;
-    }
-
-    /**
-     * @param method the rider's chosen payment method
-     * @return {@code true} if this zone accepts that kind of payment
-     */
     public boolean allows(PaymentMethod method) {
-        throw new UnsupportedOperationException("TODO: Person C");
+        if (method == null) return false;
+        return allowedMethods.stream().anyMatch(type -> type.isInstance(method));
     }
 }
