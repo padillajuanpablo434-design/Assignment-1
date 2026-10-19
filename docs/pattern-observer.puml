@@ -1,0 +1,33 @@
+@startuml
+skinparam classAttributeIconSize 0
+class FaultService {
+  - listeners: List<FaultListener>
+  - reports: List<FaultReport>
+  + addListener(listener)
+  + removeListener(listener)
+  + report(vehicle, type, description, selfReported): FaultReport
+}
+interface FaultListener {
+  + onFault(report: FaultReport)
+}
+class MaintenanceCrew {
+  - pendingJobs: List<FaultReport>
+  + onFault(report: FaultReport)
+}
+class OperatorConsole {
+  - alerts: List<FaultReport>
+  + onFault(report: FaultReport)
+}
+class FaultReport {
+  - vehicle: Vehicle
+  - type: FaultType
+  - description: String
+  - selfReported: boolean
+}
+class Vehicle
+FaultService o-- "0..*" FaultListener : subscribes
+FaultService --> "0..*" FaultReport : creates
+FaultReport --> Vehicle : identifies
+MaintenanceCrew ..|> FaultListener
+OperatorConsole ..|> FaultListener
+@enduml
