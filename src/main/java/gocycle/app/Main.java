@@ -11,8 +11,8 @@ import java.time.temporal.ChronoUnit;
 import java.util.Set;
 
 /**
- * GoCycle end-to-end demonstration. TEMPORARY demo-specific vehicle/dock
- * adapters must be replaced with Person B's concrete classes before submission.
+ * GoCycle end-to-end demonstration. 
+ * Lock status would be updated with sensors in real space, so demo just leaves them unlocked as default
  */
 public final class Main {
     private Main() { }
@@ -23,7 +23,7 @@ public final class Main {
         CreditCardPayment card = new CreditCardPayment("Credit card ending 4242");
         PaymentMethod payment = new ZoneRestrictedPaymentMethod(downtown, card);
         Vehicle vehicle = new PedalBike("BIKE-001");
-        DockingPoint returnDock = new DemoDockingPoint("DOCK-002");
+        DockingPoint returnDock = new DockingPoint("DOCK-002");
         Trip trip = new Trip("TRIP-001",
                 new CasualRider("R-001", "Demo Rider", "rider@example.com"), vehicle, payment);
 
@@ -37,7 +37,7 @@ public final class Main {
             System.out.println("Return rejected: lock not confirmed; trip remains " + trip.getState());
         }
 
-        ((DemoDockingPoint) returnDock).dock(vehicle);
+        returnDock.dock(vehicle);
         Receipt receipt = trip.end(returnDock, start.plus(26, ChronoUnit.MINUTES));
         new EmailReceiptSender().send(receipt);
         System.out.println("Hold released: " + !card.hasActiveHold());
@@ -53,18 +53,5 @@ public final class Main {
         System.out.println("Operator alerts: " + controlRoom.getAlerts().size());
         System.out.println("Transit card allowed downtown? "
                 + downtown.allows(new TransitCardPayment("Transit card ending 0012")));
-    }
-
-    /** Temporary until Person B finishes physical-lock simulation. */
-    private static final class DemoDockingPoint extends DockingPoint {
-        private Vehicle stored;
-        DemoDockingPoint(String id) { super(id); }
-        @Override public Vehicle getDocked() { return stored; }
-        @Override public boolean isFree() { return stored == null; }
-        @Override public void dock(Vehicle vehicle) {
-            if (!isFree()) throw new IllegalStateException("Dock is already occupied");
-            this.stored = vehicle;
-        }
-        @Override public boolean isLocked() { return stored != null; }
     }
 }
