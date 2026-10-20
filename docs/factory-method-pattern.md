@@ -1,16 +1,43 @@
-# Factory Method Pattern for Vehicle Creation
+# Factory Method — Vehicle Creation (Reviewed Implementation)
 
 ## Problem
-GoCycle supports three vehicle types: pedal bikes, e-bikes, and e-scooters. The system needs to create these vehicles without forcing client code to depend on the concrete classes directly. If callers instantiate `PedalBike`, `ElectricBike`, or `ElectricScooter` themselves, the code becomes tightly coupled to implementation details and becomes harder to extend when new vehicle types are added (like non-electric scooters).
+Creating a `PedalBike`, `ElectricBike`, or `ElectricScooter` at each point of use ties client code to all three concrete classes. The design should preserve the common `Vehicle` API and isolate product construction so that trip workflows work regardless of vehicle type.
 
-## Why this pattern fits
-The Factory Method pattern is appropriate because the creation logic is conceptually the same for all vehicle types, but the concrete product differs. The client only needs to say which `VehicleType` it wants, and the factory creates the correct object. This keeps the calling code focused on behavior rather than construction details and follows the dependency inversion idea that high-level code should depend on abstractions, not concrete implementations.
+## Solution and justification
+`VehicleCreator` is the abstract **Creator**. It defines a public `create(id)` method that validates inputs and delegates construction to the protected **factory method** `createVehicle(id)`. `PedalBikeCreator`, `ElectricBikeCreator`, and `ElectricScooterCreator` override the factory method to return a concrete `Vehicle` product. `VehicleFactoryImpl` implements the existing `VehicleFactory` interface and selects an appropriate creator from a registry keyed by `VehicleType`. Callers continue to use `VehicleFactory.create(type, id)` and receive a `Vehicle`, so the rest of the GoCycle code does not depend on specific constructors.
 
-## UML snippet
+## Small UML snippet
 
-![Factory Method UML](images/factory-method-uml-snippet.png)
+```plantuml
+@startuml
+interface VehicleFactory {
+ +create(type: VehicleType, id: String): Vehicle
+}
+class VehicleFactoryImpl
+abstract class VehicleCreator {
+ +create(id: String): Vehicle
+ #createVehicle(id: String): Vehicle
+}
+class PedalBikeCreator
+class ElectricBikeCreator
+class ElectricScooterCreator
+abstract class Vehicle
+class PedalBike
+class ElectricBike
+class ElectricScooter
+VehicleFactory <|.. VehicleFactoryImpl
+VehicleFactoryImpl o--> VehicleCreator
+VehicleCreator <|-- PedalBikeCreator
+VehicleCreator <|-- ElectricBikeCreator
+VehicleCreator <|-- ElectricScooterCreator
+PedalBikeCreator ..> PedalBike
+ElectricBikeCreator ..> ElectricBike
+ElectricScooterCreator ..> ElectricScooter
+Vehicle <|-- PedalBike
+Vehicle <|-- ElectricBike
+Vehicle <|-- ElectricScooter
+@enduml
+```
 
 ## Benefits and trade-offs
-This design improves flexibility by centralizing object creation in one place and letting the factory decide which implementation to instantiate. It also makes the code easier to extend when adding a new `VehicleType`, because the change is localized to the factory instead of being spread across the application. The main trade-off is a small amount of indirection: callers must use the factory, and the factory must know about each vehicle implementation. This is usually a worthwhile cost because it keeps creation logic consistent and reduces coupling.
-
-The Factory Method design also aligns well with the SOLID principles. The Single Responsibility Principle is respected because creation logic is isolated in the factory rather than mixed into trip logic or vehicle logic. The Open/Closed Principle is supported because new vehicle types can be added by extending the factory logic without modifying callers that already use the `Vehicle` abstraction. The Liskov Substitution Principle is maintained because every concrete vehicle object can be used wherever a `Vehicle` is expected; callers do not need to know whether the instance is a `PedalBike`, `ElectricBike`, or `ElectricScooter`. The Interface Segregation Principle is satisfied by keeping the factory interface focused on one responsibility (creating a vehicle). Finally, the Dependency Inversion Principle is supported because the client depends on the `VehicleFactory` and `Vehicle` abstractions rather than the concrete implementations themselves, reducing coupling and making the design easier to evolve.
+The concrete construction rules are now local to the corresponding creator subclass and can be individually tested. `Main` uses the factory instead of `new PedalBike(...)`. Unlike the earlier switch-only implementation (which was closer to a *Simple Factory*), the polymorphic `createVehicle` method clearly implements Factory Method. The design adds creator classes and a small selection registry; adding a new `VehicleType` still requires wiring that type into the registry. This is a deliberate compromise to preserve the team's original `VehicleFactory` API.

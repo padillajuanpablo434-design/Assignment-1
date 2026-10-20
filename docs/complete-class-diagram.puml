@@ -1,0 +1,92 @@
+@startuml
+skinparam classAttributeIconSize 0
+hide empty methods
+abstract class Rider
+class CasualRider
+class MemberRider
+class StudentRider
+interface PricingStrategy
+class CasualPricing
+class MemberPricing
+class StudentPricing
+class LongTripSurchargePricing
+class Trip
+class Receipt
+interface ReceiptSender
+class EmailReceiptSender
+class AppReceiptSender
+interface PaymentMethod
+abstract class AbstractInMemoryPayment
+class CreditCardPayment
+class TransitCardPayment
+class PhoneWalletPayment
+class ZoneRestrictedPaymentMethod
+class Zone
+abstract class Vehicle
+abstract class ElectricVehicle
+class PedalBike
+class ElectricBike
+class ElectricScooter
+interface VehicleFactory
+class VehicleFactoryImpl
+abstract class VehicleCreator
+class PedalBikeCreator
+class ElectricBikeCreator
+class ElectricScooterCreator
+class Station
+class DockingPoint
+class StationFinder
+class FaultService
+class FaultReport
+interface FaultListener
+class MaintenanceCrew
+class OperatorConsole
+class ElectricFaultMonitor
+
+Rider <|-- CasualRider
+Rider <|-- MemberRider
+Rider <|-- StudentRider
+PricingStrategy <|.. CasualPricing
+PricingStrategy <|.. MemberPricing
+PricingStrategy <|.. StudentPricing
+PricingStrategy <|.. LongTripSurchargePricing
+Rider o--> PricingStrategy : pricing
+LongTripSurchargePricing o--> PricingStrategy : wrapped rate
+Trip --> Rider
+Trip --> Vehicle
+Trip --> PaymentMethod
+Trip ..> DockingPoint : lock confirmed
+Trip ..> Receipt : creates
+ReceiptSender <|.. AppReceiptSender
+ReceiptSender <|.. EmailReceiptSender
+ReceiptSender ..> Receipt
+PaymentMethod <|.. AbstractInMemoryPayment
+PaymentMethod <|.. ZoneRestrictedPaymentMethod
+AbstractInMemoryPayment <|-- CreditCardPayment
+AbstractInMemoryPayment <|-- TransitCardPayment
+AbstractInMemoryPayment <|-- PhoneWalletPayment
+ZoneRestrictedPaymentMethod o--> PaymentMethod
+ZoneRestrictedPaymentMethod --> Zone
+Station *-- "1..*" DockingPoint : owns
+DockingPoint --> "0..1" Vehicle : docked
+StationFinder ..> Station : nearest free
+Vehicle <|-- PedalBike
+Vehicle <|-- ElectricVehicle
+ElectricVehicle <|-- ElectricBike
+ElectricVehicle <|-- ElectricScooter
+VehicleFactory <|.. VehicleFactoryImpl
+VehicleFactoryImpl o--> VehicleCreator
+VehicleCreator <|-- PedalBikeCreator
+VehicleCreator <|-- ElectricBikeCreator
+VehicleCreator <|-- ElectricScooterCreator
+PedalBikeCreator ..> PedalBike
+ElectricBikeCreator ..> ElectricBike
+ElectricScooterCreator ..> ElectricScooter
+FaultService o--> "0..*" FaultListener
+FaultService --> "0..*" FaultReport
+FaultReport --> Vehicle
+FaultListener <|.. MaintenanceCrew
+FaultListener <|.. OperatorConsole
+ElectricFaultMonitor --> FaultService
+ElectricFaultMonitor ..> ElectricVehicle : monitor telemetry
+@enduml

@@ -7,6 +7,12 @@ package gocycle.vehicle;
 public abstract class ElectricVehicle extends Vehicle {
 
     private int batteryPercent;
+    private final java.util.List<java.util.function.IntConsumer> batteryListeners = new java.util.ArrayList<>();
+
+    /** Subscribe to battery threshold transitions for vehicle telemetry. */
+    public void addBatteryListener(java.util.function.IntConsumer listener) {
+        batteryListeners.add(java.util.Objects.requireNonNull(listener, "listener"));
+    }
 
     /**
      * @param id             the unique vehicle id
@@ -14,7 +20,7 @@ public abstract class ElectricVehicle extends Vehicle {
      */
     protected ElectricVehicle(String id, int batteryPercent) {
         super(id);
-        this.batteryPercent = batteryPercent;
+        setBatteryPercent(batteryPercent);
     }
 
     /**
@@ -33,7 +39,13 @@ public abstract class ElectricVehicle extends Vehicle {
         if (batteryPercent < 0 || batteryPercent > 100) {
             throw new IllegalArgumentException("Battery must be between 0 and 100");
         }
+        int previous = this.batteryPercent;
         this.batteryPercent = batteryPercent;
+        if (previous >= 20 && batteryPercent < 20) {
+            for (java.util.function.IntConsumer listener : java.util.List.copyOf(batteryListeners)) {
+                listener.accept(batteryPercent);
+            }
+        }
     }
 
     /**    (non-Javadoc)
