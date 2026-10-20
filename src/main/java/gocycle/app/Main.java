@@ -22,7 +22,7 @@ public final class Main {
                 Set.of(CreditCardPayment.class, PhoneWalletPayment.class));
         CreditCardPayment card = new CreditCardPayment("Credit card ending 4242");
         PaymentMethod payment = new ZoneRestrictedPaymentMethod(downtown, card);
-        Vehicle vehicle = new DemoPedalBike("BIKE-001");
+        Vehicle vehicle = new PedalBike("BIKE-001");
         DockingPoint returnDock = new DemoDockingPoint("DOCK-002");
         Trip trip = new Trip("TRIP-001",
                 new CasualRider("R-001", "Demo Rider", "rider@example.com"), vehicle, payment);
