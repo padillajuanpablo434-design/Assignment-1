@@ -55,12 +55,6 @@ public final class Main {
                 + downtown.allows(new TransitCardPayment("Transit card ending 0012")));
     }
 
-    /** Temporary until Person B finishes the concrete vehicle hierarchy. */
-    private static final class DemoPedalBike extends Vehicle {
-        DemoPedalBike(String id) { super(id); }
-        @Override public boolean isRentable() { return getStatus() == VehicleStatus.AVAILABLE; }
-    }
-
     /** Temporary until Person B finishes physical-lock simulation. */
     private static final class DemoDockingPoint extends DockingPoint {
         private Vehicle stored;

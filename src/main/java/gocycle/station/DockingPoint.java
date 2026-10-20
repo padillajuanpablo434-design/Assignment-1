@@ -11,6 +11,7 @@ public class DockingPoint {
 
     private final String id;
     private Vehicle docked;
+    private boolean locked;
 
     /**
      * Creates an empty docking point.
@@ -19,6 +20,7 @@ public class DockingPoint {
      */
     public DockingPoint(String id) {
         this.id = id;
+        this.locked = false;
     }
 
     /**
@@ -39,12 +41,7 @@ public class DockingPoint {
      * @return {@code true} if no vehicle is docked here
      */
     public boolean isFree() {
-        if(this.docked == null){
-            return true;
-        }
-        else{
-            return false;
-        }
+        return docked == null;
     }
 
     /**
@@ -53,7 +50,19 @@ public class DockingPoint {
      * @param vehicle the vehicle being returned
      */
     public void dock(Vehicle vehicle) {
+        if (!isFree()) {
+            throw new IllegalStateException("Docking point " + id + " is already occupied");
+        }
         this.docked = vehicle;
+        this.locked = true;
+    }
+
+    /**
+     * Marks the dock as unlocked and clears the parked vehicle.
+     */
+    public void undock() {
+        this.docked = null;
+        this.locked = false;
     }
 
     /**
@@ -63,6 +72,6 @@ public class DockingPoint {
      * @return {@code true} if a vehicle is docked and locked
      */
     public boolean isLocked() {
-        throw new UnsupportedOperationException("TODO: Person B");
+        return docked != null && locked;
     }
 }
