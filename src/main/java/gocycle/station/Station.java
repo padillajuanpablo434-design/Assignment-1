@@ -59,6 +59,11 @@ public class Station {
      * @return {@code true} if at least one docking point can accept a returned vehicle
      */
     public boolean hasFreePoint() {
-        throw new UnsupportedOperationException("TODO: Person B");
+        for (DockingPoint dockingPoint : points) {
+            if(dockingPoint.isFree()){
+                return true;
+            }
+        }
+        return false;
     }
 }

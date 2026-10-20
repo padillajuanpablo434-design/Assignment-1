@@ -4,8 +4,7 @@ import gocycle.vehicle.Vehicle;
 
 /**
  * A single dock at a station that holds at most one vehicle.
- * <p>
- * Stub for Person B, who owns stations and the return flow.
+ *
  */
 public class DockingPoint {
 
