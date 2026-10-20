@@ -25,4 +25,26 @@ public abstract class ElectricVehicle extends Vehicle {
     public int getBatteryPercent() {
         return batteryPercent;
     }
+
+
+    /**
+     * 
+     * @param batteryPercent set the charge between 0 to 100
+     */
+    public void setBatteryPercent(int batteryPercent) {
+        if (batteryPercent < 0 || batteryPercent > 100) {
+            throw new IllegalArgumentException("Battery must be between 0 and 100");
+        }
+        this.batteryPercent = batteryPercent;
+    }
+
+    /**    (non-Javadoc)
+     * 
+     * @see gocycle.vehicle.Vehicle#isRentable()
+     * @return rentability status based on availability and battery charge
+     */
+    @Override
+    public boolean isRentable() {
+        return getStatus() == VehicleStatus.AVAILABLE && batteryPercent >= 20;
+    }
 }
