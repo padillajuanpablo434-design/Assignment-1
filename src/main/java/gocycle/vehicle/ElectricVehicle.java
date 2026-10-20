@@ -2,9 +2,7 @@ package gocycle.vehicle;
 
 /**
  * A vehicle with a battery (e-bike or e-scooter).
- * <p>
  * Electric vehicles cannot be rented below 20% battery.
- * Stub for Person B, who owns the vehicle hierarchy.
  */
 public abstract class ElectricVehicle extends Vehicle {
 

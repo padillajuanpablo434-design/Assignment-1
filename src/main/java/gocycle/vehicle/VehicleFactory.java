@@ -2,8 +2,7 @@ package gocycle.vehicle;
 
 /**
  * Creates vehicles without callers depending on the concrete vehicle classes (Factory Method).
- * <p>
- * Stub for Person B.
+ * 
  */
 public interface VehicleFactory {
 

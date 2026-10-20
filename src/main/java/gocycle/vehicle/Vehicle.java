@@ -2,8 +2,8 @@ package gocycle.vehicle;
 
 /**
  * A rentable GoCycle vehicle (pedal bike, e-bike or e-scooter).
- * <p>
- * Stub for Person B, who owns the vehicle hierarchy.
+ * 
+ * 
  */
 public abstract class Vehicle {
 

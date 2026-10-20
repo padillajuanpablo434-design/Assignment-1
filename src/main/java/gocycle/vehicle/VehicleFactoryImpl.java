@@ -1,5 +1,8 @@
 package gocycle.vehicle;
-
+/**
+ * 
+ * VehicleFactoryImpl: implements Vehicle Factory
+ */
 public final class VehicleFactoryImpl implements VehicleFactory{
     @Override
     public Vehicle create(VehicleType type, String id) {

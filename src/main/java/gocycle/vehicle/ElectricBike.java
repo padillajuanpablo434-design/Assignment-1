@@ -1,5 +1,8 @@
 package gocycle.vehicle;
-
+/**
+ * 
+ * ElectricBike: electric bicycle vehicle
+ */
 public final class ElectricBike extends ElectricVehicle{
 
     public ElectricBike(String id){
@@ -8,10 +11,5 @@ public final class ElectricBike extends ElectricVehicle{
     public ElectricBike(String id, int batteryPercent){
         super(id, batteryPercent);
     }
-    @Override
-    public boolean isRentable() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'isRentable'");
-    }
-    
+
 }

@@ -1,5 +1,8 @@
 package gocycle.vehicle;
-
+/**
+ * 
+ * PedalBike - non-electrice bikes with pedals
+ */
 public final class PedalBike extends Vehicle{
 
     public PedalBike(String id){
@@ -7,8 +10,7 @@ public final class PedalBike extends Vehicle{
     }
     @Override
     public boolean isRentable() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'isRentable'");
+        return getStatus() == VehicleStatus.AVAILABLE;
     }
 
 }
