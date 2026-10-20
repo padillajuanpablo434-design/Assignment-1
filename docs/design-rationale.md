@@ -1,0 +1,17 @@
+# GoCycle — Design Rationale (One-Page Section)
+
+The GoCycle domain is divided into riders, pricing, trips, vehicles, docking stations, payments, and fault monitoring because those responsibilities change independently. `Trip` coordinates a single rental, while `PricingStrategy` calculates its price, `PaymentMethod` handles simulated deposits and charges, and `DockingPoint` confirms physical locking. This minimizes the impact of adding a vehicle or rider category. The implementation is a Java console-based prototype of the core service, not a deployed phone app or real payment gateway.
+
+**Single Responsibility (SRP).** `Trip` manages the rental lifecycle; pricing classes calculate fares; `Vehicle` subclasses determine rentability; `DockingPoint` manages occupancy and lock state; `StationFinder` selects stations with available docks; and `FaultService` records and broadcasts faults. `OperatorConsole` and `MaintenanceCrew` have separate alert-recording responsibilities.
+
+**Open/Closed (OCP).** Additional rider rates can implement `PricingStrategy` without changing trip logic. New notification receivers can implement `FaultListener`. The factory uses separate `VehicleCreator` subclasses that implement a common factory method, although the `VehicleFactoryImpl` registry must still be extended to recognize additional `VehicleType` values.
+
+**Liskov Substitution (LSP).** `CasualRider`, `MemberRider`, and `StudentRider` are usable wherever `Rider` is expected; the pedal, electric-bike, and scooter implementations conform to the `Vehicle` contract. Electric vehicles narrow eligibility through battery rules without changing the API. All `PaymentMethod` implementations support hold, charge, release, and display operations, including zone-restricted wrappers.
+
+**Interface Segregation (ISP).** `FaultListener` defines just `onFault`, `ReceiptSender` just `send`, and `PricingStrategy` exposes only pricing operations. These small contracts avoid forcing notification receivers or payment clients to implement unrelated operations.
+
+**Dependency Inversion (DIP).** `Trip` depends on `PricingStrategy` and `PaymentMethod` instead of concrete pricing and payment classes. `FaultService` depends on `FaultListener`. Clients use `VehicleFactory`, not the constructors of particular vehicles, when creating rentable assets.
+
+**Patterns.** Strategy encapsulates the casual/member/student pricing rules. Decorator adds the common long-trip surcharge without duplicating it in every pricing class. Observer broadcasts a fault to maintenance and the control room; telemetry adapters also use it. Factory Method places construction hooks in individual `VehicleCreator` subclasses (`PedalBikeCreator`, `ElectricBikeCreator`, and `ElectricScooterCreator`). The registry chooses an appropriate creator while the creator's `createVehicle` method determines the concrete product. Additional abstractions mean more classes and wiring, but each component can be tested and evolved independently.
+
+**Key safety invariant.** A returned, locked vehicle is not restored to `AVAILABLE` if it was marked `OUT_OF_SERVICE` during the ride. Once registered, a battery monitor reports transitions below 20% and removes the electric vehicle from service. Payments are simulated in memory. The console application intentionally does not claim to implement production translations, text-to-speech, mobile screens, physical lock sensors, real routing, or bank authorization.

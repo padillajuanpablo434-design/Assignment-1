@@ -189,7 +189,7 @@ The diagram shows these relationships:
   2. The use case continues at step 4, and step 7 is skipped because there is no rider to confirm to.
 - **2a. The rider reports a fault on the vehicle they are currently riding:**
   1. The system records the report and asks the rider to return the vehicle to the nearest station (UC-02).
-  2. The vehicle is taken out of service once it is docked.
+  2. The system immediately marks the vehicle OUT_OF_SERVICE and notifies the maintenance crew and operators. The trip remains active until the vehicle is securely docked; returning it must not restore AVAILABLE status.
 - **5a. The vehicle is already out of service:**
   1. The system adds the report to the vehicle's existing fault record.
   2. The crew and operators are notified of the additional report, and the use case continues at step 7.

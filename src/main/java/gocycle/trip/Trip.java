@@ -103,7 +103,12 @@ public class Trip {
                     "Charge of " + total + " declined by " + payment.displayName());
         }
         payment.releaseHold();
-        vehicle.setStatus(VehicleStatus.AVAILABLE);
+
+// A faulty vehicle must remain out of service after being returned.
+        if (vehicle.getStatus() != VehicleStatus.OUT_OF_SERVICE) {
+            vehicle.setStatus(VehicleStatus.AVAILABLE);
+        }
+
         endTime = now;
         state = TripState.COMPLETED;
 
