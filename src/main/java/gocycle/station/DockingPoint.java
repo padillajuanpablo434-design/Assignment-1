@@ -39,7 +39,12 @@ public class DockingPoint {
      * @return {@code true} if no vehicle is docked here
      */
     public boolean isFree() {
-        throw new UnsupportedOperationException("TODO: Person B");
+        if(this.docked == null){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 
     /**
@@ -48,7 +53,7 @@ public class DockingPoint {
      * @param vehicle the vehicle being returned
      */
     public void dock(Vehicle vehicle) {
-        throw new UnsupportedOperationException("TODO: Person B");
+        this.docked = vehicle;
     }
 
     /**
