@@ -77,5 +77,3 @@ The Java implementation is a console-based educational prototype, not a deployed
 ## Deliverables
 
 The group submission ZIP contains the final report PDF, source and tests, Maven configuration, supporting documentation, README, TEAM, repository URL, and exported Git commit history.
-
-If external sources or AI assistance were used, disclose them in the D2L submission comments in accordance with course requirements.
